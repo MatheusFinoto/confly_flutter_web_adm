@@ -2,7 +2,6 @@
 
 A Confly Flutter web application.
 
-Images 
 
 
 

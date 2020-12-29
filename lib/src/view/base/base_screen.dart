@@ -1,3 +1,4 @@
+import 'package:confly_web_adm/src/components/custon_divider.dart';
 import 'package:flutter/material.dart';
 import 'package:confly_web_adm/src/utils/helper.dart' as GLOBAL;
 
@@ -17,6 +18,7 @@ class _BaseScreenState extends State<BaseScreen> {
         children: [
           size.width < 480 ? Container() :
           Card(
+            elevation: 5,
             margin: EdgeInsets.zero,
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.only(topRight: Radius.circular(10), bottomRight: Radius.circular(10))
@@ -70,9 +72,48 @@ class _BaseScreenState extends State<BaseScreen> {
             ],
           ),
         ),
-        Container(width: double.infinity, height: 0.1, color: Colors.grey[200],)
+        CustonDivider(),
+        ListTile(
+          leading: CircleAvatar(
+            backgroundImage: NetworkImage('https://scontent.fvcp6-1.fna.fbcdn.net/v/t1.0-9/132323826_3465168233536838_4705598638822315436_o.jpg?_nc_cat=111&ccb=2&_nc_sid=09cbfe&_nc_eui2=AeGrpcmcd9hVNNrVqo1G797_8r6GOXzEweHyvoY5fMTB4V6pVpV5GOQmR9cnfvvmPwzft3oXr9ibkqbeCwTr1KdK&_nc_ohc=fZg-luuPYzkAX-f1Tuf&_nc_ht=scontent.fvcp6-1.fna&oh=b72b0dace4717f4d08fcc3ae603dc1ff&oe=600F7F69'),
+          ),
+          title: Text('Matheus'),
+          subtitle: Row(
+            children: [
+              CircleAvatar(
+                backgroundColor: Colors.green,
+                maxRadius: 5,
+              ),
+              Text('Online', style: TextStyle(fontSize: 12),)
+            ],
+          ),
+        ),
+        CustonDivider(),
+        Expanded(
+          child: ListView(
+            children: [
+              myTile(Icons.dashboard_outlined, 'Dashboard'),
+              myTile(Icons.people_alt_outlined, 'Funcionários'),
+              myTile(Icons.business, 'Empresas'),
+            ],
+          ),
+        ),
+        CustonDivider(),
+        ListTile(
+          leading: Icon(Icons.settings),
+          title: Text('Cofigurações'),
+          onTap: (){},
+        )
 
       ],
+    );
+  }
+
+  Widget myTile(IconData icondata, String title){
+    return ListTile(
+      leading: Icon(icondata),
+      title: Text(title,),
+      onTap: (){},
     );
   }
 }

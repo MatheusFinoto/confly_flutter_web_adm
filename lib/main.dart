@@ -1,3 +1,4 @@
+import 'package:confly_web_adm/src/view/base/base_screen.dart';
 import 'package:confly_web_adm/src/view/login/login_screen.dart';
 import 'package:confly_web_adm/src/utils/helper.dart' as GLOBAL;
 import 'package:flutter/material.dart';
@@ -17,9 +18,9 @@ class MyApp extends StatelessWidget {
         primaryColor: GLOBAL.ORANGE,
         visualDensity: VisualDensity.adaptivePlatformDensity,
         brightness: Brightness.light,
-        scaffoldBackgroundColor: Colors.grey[200],
+        //scaffoldBackgroundColor: Colors.grey[200],
       ),
-      home: LoginScreen()
+      home: BaseScreen()
     );
   }
 }
