@@ -1,6 +1,9 @@
 import 'package:confly_web_adm/src/components/custon_divider.dart';
+import 'package:confly_web_adm/src/stores/base_store.dart';
 import 'package:flutter/material.dart';
 import 'package:confly_web_adm/src/utils/helper.dart' as GLOBAL;
+import 'package:flutter_mobx/flutter_mobx.dart';
+import 'package:mobx/mobx.dart';
 
 class BaseScreen extends StatefulWidget {
   @override
@@ -8,23 +11,32 @@ class BaseScreen extends StatefulWidget {
 }
 
 class _BaseScreenState extends State<BaseScreen> {
+
+  //final BaseStore baseStore = GetIt.I<BaseStore>();
+  final BaseStore baseStore = BaseStore();
+
+  final pageController = PageController(initialPage: 0, keepPage: true);
+
+  @override
+  void initState() {
+    super.initState();
+    reaction((_)=>baseStore.page, (page)=>pageController.jumpToPage(page));
+  }
+
   @override
   Widget build(BuildContext context) {
     var size = MediaQuery.of(context).size;
     return Scaffold(
-      // drawer: size.width < 500 ? Drawer() : null,
-      // appBar: size.width < 500 ? AppBar(elevation: 0,) : null,
       body: Row(
         children: [
           size.width < 480 ? Container() :
           Card(
-            elevation: 5,
             margin: EdgeInsets.zero,
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.only(topRight: Radius.circular(10), bottomRight: Radius.circular(10))
             ),
             child: Container(
-              width: 200,
+              width: 250,
               child: Menu(),
             ),
           ),
@@ -32,6 +44,16 @@ class _BaseScreenState extends State<BaseScreen> {
             child: Scaffold(
               drawer: size.width < 480 ? Drawer(child: Menu(),) : null,
               appBar: size.width < 480 ? AppBar(elevation: 0,) : null,
+              body: PageView(
+                controller: pageController,
+                physics: NeverScrollableScrollPhysics(),
+                children: [
+                  baseTab(),
+                  Text('FUNCIONARIOS'),
+                  Text('EMPRESAS'),
+                  Text('NOTIFICAÇOES'),
+                ],
+              ),
             ),
           )
         ],
@@ -92,9 +114,10 @@ class _BaseScreenState extends State<BaseScreen> {
         Expanded(
           child: ListView(
             children: [
-              myTile(Icons.dashboard_outlined, 'Dashboard'),
-              myTile(Icons.people_alt_outlined, 'Funcionários'),
-              myTile(Icons.business, 'Empresas'),
+              myTile(Icons.dashboard_outlined, 'Dashboard', 0),
+              myTile(Icons.people_alt_outlined, 'Funcionários', 1),
+              myTile(Icons.business_outlined, 'Empresas', 2),
+              myTile(Icons.notifications_none_outlined, 'Notificações', 3),
             ],
           ),
         ),
@@ -104,16 +127,38 @@ class _BaseScreenState extends State<BaseScreen> {
           title: Text('Cofigurações'),
           onTap: (){},
         )
-
       ],
     );
   }
 
-  Widget myTile(IconData icondata, String title){
-    return ListTile(
-      leading: Icon(icondata),
-      title: Text(title,),
-      onTap: (){},
+  Widget myTile(IconData icondata, String title, int page){
+    return Observer(
+      builder: (_){
+        return ListTile(
+          leading: Icon(icondata, color: page == baseStore.page ? GLOBAL.ORANGE : Colors.black,),
+          title: Text(title,),
+          onTap: (){
+            baseStore.setPage(page);
+          },
+        );
+      },
+    );
+  }
+
+  Widget baseTab(){
+    return Container(
+      margin: EdgeInsets.all(16),
+      child: Card(
+        child: Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Column(
+            children: [
+              Text('DASHBOARD',style: TextStyle(fontSize: 26, fontWeight: FontWeight.bold),),
+            ],
+
+          ),
+        ),
+      ),
     );
   }
 }
