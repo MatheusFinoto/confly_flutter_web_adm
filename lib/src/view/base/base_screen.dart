@@ -1,3 +1,4 @@
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:confly_web_adm/src/components/custon_divider.dart';
 import 'package:confly_web_adm/src/stores/base_store.dart';
 import 'package:flutter/material.dart';
@@ -106,6 +107,7 @@ class _BaseScreenState extends State<BaseScreen> {
                 backgroundColor: Colors.green,
                 maxRadius: 5,
               ),
+              SizedBox(width: 4,),
               Text('Online', style: TextStyle(fontSize: 12),)
             ],
           ),
@@ -149,16 +151,88 @@ class _BaseScreenState extends State<BaseScreen> {
     return Container(
       margin: EdgeInsets.all(16),
       child: Card(
-        child: Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: Column(
-            children: [
-              Text('DASHBOARD',style: TextStyle(fontSize: 26, fontWeight: FontWeight.bold),),
-            ],
+        elevation: 5,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(10),
+        ),
+        child: Column(
+          children: [
+            Container(
+              width: double.infinity,
+              height: 60,
+              decoration: BoxDecoration(
+                //color: Colors.grey[300],
+                borderRadius: BorderRadius.only(topLeft: Radius.circular(10), topRight: Radius.circular(10)),
+              ),
+              child: Center(
+                child: Padding(
+                  padding: const EdgeInsets.all(16.0),
+                  child: Row(
+                    children: [
+                      Text('DASHBOARD',style: TextStyle(fontSize: 26, fontWeight: FontWeight.bold),),
+                    ],
+                  ),
+                ),
+              ),
+            ),
+            Container(height: 0.3, width: double.infinity, color: Colors.grey,),
+            Padding(
+              padding: EdgeInsets.all(8),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  Expanded(
+                    child: myCard('Empresas', '10', Colors.lightBlueAccent, Icons.business_outlined),
+                  ),
+                  Expanded(
+                    child: myCard('Funcionários', '6', Colors.green[600], Icons.group_outlined),
+                  ),
+                  Expanded(
+                    child: myCard('Lucros', 'R\$: 1,000,434.00', Colors.orange, Icons.attach_money_outlined),
+                  ),
+                  Expanded(
+                    child: myCard('Caixa', '\$ 10,543', Colors.red, Icons.attach_money_outlined),
+                  ),
+                ],
+              ),
+            )
 
-          ),
+          ],
+
         ),
       ),
+    );
+  }
+
+  Widget myCard(title, subtitle, color, icon){
+    return Card(
+        elevation: 5,
+        color: color,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(10),
+        ),
+        child: Container(
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.all(Radius.circular(10)),
+            image: DecorationImage(
+                image: AssetImage('assets/lines1.png'),
+                fit: BoxFit.cover
+            ),
+          ),
+          //padding: EdgeInsets.all(8),
+          child: Column(
+            children: [
+              SizedBox(height: 20,),
+              ListTile(
+                title: AutoSizeText(title, style: TextStyle(color: Colors.white, fontSize: 20, fontWeight: FontWeight.w400),maxLines: 1,overflow: TextOverflow.ellipsis,),
+                subtitle: AutoSizeText(subtitle,style: TextStyle(color: Colors.white, fontSize: 25, fontWeight: FontWeight.bold),maxLines: 1,overflow: TextOverflow.ellipsis,),
+                trailing: Icon(icon, size: 40, color: Colors.black.withOpacity(0.3),),
+              ),
+              SizedBox(height: 20,),
+            ],
+          ),
+        )
     );
   }
 }
